@@ -1,11 +1,99 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Midterm Part 2</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Breast Cancer SVM Predictor</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 680px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 16px;
+      }
+      .row {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .result {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #f6f6f6;
+      }
+      .error {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #ffe9e9;
+        border: 1px solid #ffb3b3;
+      }
+      small {
+        color: #666;
+      }
+    </style>
   </head>
   <body>
-    <h1>Breast Cancer Prediction App</h1>
+    <h1>Breast Cancer SVM Predictor</h1>
+    <p>
+      <small
+        >Enter values for the model’s selected features, then submit.</small
+      >
+    </p>
+
+    <div class="card">
+      <form action="/predict" method="POST">
+        {% for feat in features %}
+        <div class="row">
+          <label for="{{ feat }}">{{ feat }}</label>
+          <input
+            id="{{ feat }}"
+            name="{{ feat }}"
+            type="number"
+            step="any"
+            required
+            placeholder="Enter a numeric value"
+          />
+        </div>
+        {% endfor %}
+
+        <button type="submit">Predict</button>
+      </form>
+
+      {% if label %}
+      <div class="result">
+        <strong>Prediction:</strong> {{ label }} ({{ prediction }})
+        <div>
+          <small
+            >Predicted probability (malignant): {{ '%.4f'|format(proba)
+            }}</small
+          >
+        </div>
+      </div>
+      {% endif %} {% if error %}
+      <div class="error"><strong>Error:</strong> {{ error }}</div>
+      {% endif %}
+    </div>
   </body>
 </html>

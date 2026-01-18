@@ -70,7 +70,7 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train_imp)
 X_test_scaled = scaler.transform(X_test_imp)
 
-svm_rbf = SVC(kernel="rbf", random_state=RANDOM_STATE)
+svm_rbf = SVC(kernel="rbf", probability=True, random_state=RANDOM_STATE)
 svm_rbf.fit(X_train_scaled, y_train)
 
 # Evaluate
@@ -106,6 +106,7 @@ X_example_imp = imputer_loaded.transform(X_example)
 X_example_scaled = scaler_loaded.transform(X_example_imp)
 
 pred_example = model_loaded.predict(X_example_scaled)
-print("Preds (first 5):", pred_example)
+proba = svm_rbf.predict_proba(X_test_scaled)[:, 1]
+print("Probabilities (first 5):", proba[:5])
 print("True  (first 5):", y_test.iloc[:5].to_numpy())
 print("Done")
